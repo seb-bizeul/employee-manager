@@ -4,9 +4,13 @@
   "private": true,
   "dependencies": {
     "@sbizeul/fp-flow": "^0.2.2",
+    "classnames": "^2.2.6",
+    "papaparse": "^4.6.2",
     "ramda": "^0.26.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
+    "react-dropzone": "^7.0.1",
+    "react-icons": "^3.2.2",
     "react-redux": "^5.1.1",
     "react-scripts": "2.1.1",
     "redux": "^4.0.1",
@@ -26,6 +30,10 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "flow-bin": "^0.86.0"
+    "enzyme": "^3.7.0",
+    "enzyme-adapter-react-16": "^1.7.0",
+    "flow-bin": "^0.86.0",
+    "redux-devtools": "^3.4.2",
+    "redux-devtools-extension": "^2.13.5"
   }
 }
