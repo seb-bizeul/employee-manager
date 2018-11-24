@@ -3,6 +3,7 @@
   "rules": {
     "semi": [1, "never"],
     "quotes": ["warn", "single"],
-    "jsx-quotes": ["warn", "prefer-single"]
+    "jsx-quotes": ["warn", "prefer-single"],
+    "eol-last": "warn"
   }
 }
