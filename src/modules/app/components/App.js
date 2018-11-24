@@ -3,8 +3,7 @@ import React, { Component } from 'react'
 import { Provider } from 'react-redux'
 
 import configureStore from '../configureStore'
-import csv from '../../csv'
-import employee from '../../employee'
+import RoutingContainer from '../containers/RoutingContainer'
 import './App.css'
 
 
@@ -15,8 +14,7 @@ class App extends Component<{}> {
     return (
       <Provider store={store}>
         <div className='App'>
-          <csv.components.CsvUploadContainer/>
-          <employee.components.EmployeesContainer/>
+          <RoutingContainer/>
         </div>
       </Provider>
     )
