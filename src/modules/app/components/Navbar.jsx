@@ -6,11 +6,7 @@ import location from '../../location'
 import './Navbar.css'
 
 
-type Props = $ReadOnly<{|
-  
-|}>
-
-export default function Navbar(props: Props) {
+export default function Navbar() {
   return (
     <nav className='Navbar'>
       <span className='Navbar-brand'>Employee Manager</span>
