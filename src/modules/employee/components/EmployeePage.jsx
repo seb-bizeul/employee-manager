@@ -20,18 +20,20 @@ export default function EmployeePage({ employees, employeeCreate, select, sendIn
     <div className='EmployeePage'>
       <div className='EmployeePage-topBar'>
         <div className='EmployeePage-topBar--search'></div>
-        <button
-          className='EmployeePage-topBar--button'
-          onClick={employeeCreate}
-        >
-          + Create new Employee
-        </button>
-        <button
-          className='EmployeePage-topBar--button'
-          onClick={sendInvitations}
-        >
-          Send Invitations
-        </button>
+        <div>
+          <button
+            className='EmployeePage-topBar--button'
+            onClick={employeeCreate}
+          >
+            + Create new Employee
+          </button>
+          <button
+            className='EmployeePage-topBar--button'
+            onClick={sendInvitations}
+          >
+            Send Invitations
+          </button>
+        </div>
       </div>
       <Employees employees={employees} select={select}/>
     </div>
