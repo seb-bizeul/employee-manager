@@ -1,0 +1,22 @@
+.Navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 36px;
+  padding: 8px 32px;
+  background-color: #521BBE;
+  color: #FFF;
+}
+
+.Navbar-brand {
+  font-size: 22px;
+}
+
+.Navbar-section--item {
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.Navbar-section--item:not(:last-child) {
+  margin-right: 16px;
+}

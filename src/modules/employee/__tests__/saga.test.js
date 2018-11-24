@@ -4,6 +4,7 @@ import { put, takeEvery } from 'redux-saga/effects'
 import * as saga from '../saga'
 import * as employeeActions from '../actions'
 import csv from '../../csv'
+import location from '../../location'
 
 
 describe('Employee saga', () => {
@@ -21,6 +22,9 @@ describe('Employee saga', () => {
     const gen = saga.populate(action)
     expect(gen.next().value).toEqual(
       put(employeeActions.populate([]))
+    )
+    expect(gen.next().value).toEqual(
+      put(location.actions.employee())
     )
     expect(gen.next().done).toBeTruthy()
   })

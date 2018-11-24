@@ -4,6 +4,7 @@ import { Provider } from 'react-redux'
 
 import configureStore from '../configureStore'
 import RoutingContainer from '../containers/RoutingContainer'
+import Navbar from './Navbar'
 import './App.css'
 
 
@@ -14,7 +15,10 @@ class App extends Component<{}> {
     return (
       <Provider store={store}>
         <div className='App'>
-          <RoutingContainer/>
+          <Navbar/>
+          <div className='App-content'>
+            <RoutingContainer/>
+          </div>
         </div>
       </Provider>
     )
