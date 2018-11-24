@@ -7,7 +7,7 @@ export type ParseRequest = $ReadOnly<{|
 
 export type ParseSuccess = $ReadOnly<{|
   type: 'csv/PARSE_SUCCESS',
-  payload: mixed
+  payload: any
 |}>
 
 export type ParseFailure = $ReadOnly<{|
