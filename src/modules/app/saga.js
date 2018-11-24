@@ -1,11 +1,10 @@
 // @flow
-import { fork, cancel } from 'redux-saga/effects'
+import { fork } from 'redux-saga/effects'
 import type { Saga } from 'redux-saga'
 
-function* mocked() {
-  yield cancel
-}
+import csv from '../csv'
+
 
 export default function* root(): Saga<*> {
-  yield fork(mocked)
+  yield fork(csv.saga.root)
 }
