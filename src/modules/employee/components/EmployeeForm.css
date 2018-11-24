@@ -1,0 +1,66 @@
+.EmployeeForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.EmployeeForm > * {
+  margin: 16px;
+}
+
+.EmployeeForm-row {
+  display: flex;
+  flex-grow: 1;
+  width: 60%;
+}
+
+.EmployeeForm-row label {
+  width: 150px;
+}
+
+.EmployeeForm-inputText {
+  outline: none;
+  border-radius: 4px;
+  border: 1px solid lightgray;
+  transition: all 0.4s;
+  padding: 8px;
+  width: 100%;
+}
+
+.EmployeeForm-inputSelect {
+  outline: none;
+  border-radius: 4px;
+  border: 1px solid lightgray;
+  transition: all 0.4s;
+  height: 32px;
+  width: 100%;
+}
+
+.EmployeeForm-inputText:focus {
+  border: 1px solid #521BBE;
+}
+
+.EmployeeForm-submitBar {
+  margin-top: 64px;
+  display: flex;
+  justify-content: space-between;
+  width: 60%;
+}
+
+.EmployeeForm-submitBar--cancel, .EmployeeForm-submitBar--submit {
+  outline: none;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.EmployeeForm-submitBar--submit {
+  color: #FFF;
+  background-color: #521BBE;
+}
+
+.EmployeeForm-submitBar--cancel {
+  border: 1px solid lightgray;
+}
