@@ -13,7 +13,8 @@ type Props = $ReadOnly<{|
 const matchActionType = (type: string) => {
   switch (type) {
   case location.actions.CSV: return <csv.components.CsvUploadContainer/>
-  case location.actions.EMPLOYEE: return <employee.components.EmployeesContainer/>
+  case location.actions.EMPLOYEE: return <employee.components.EmployeePageContainer/>
+  case location.actions.EMPLOYEE_EDIT: return <employee.components.EmployeeFormContainer/>
   default: return null
   }
 }

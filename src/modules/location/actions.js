@@ -14,8 +14,8 @@ export const employee = () => ({ type: EMPLOYEE })
 export const employeeCreate = () => ({ type: EMPLOYEE_CREATE })
 
 export const employeeEdit = (id: string) => ({
-  type: EMPLOYEE,
-  payload: id
+  type: EMPLOYEE_EDIT,
+  payload: { id }
 })
 
 
