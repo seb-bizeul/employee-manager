@@ -25,3 +25,13 @@ export const getSelectedId = createSelector(
   getState,
   state => state.selectedId
 )
+
+export const getSelected = createSelector(
+  [getAll, getSelectedId],
+  (all, id) => maybe.chain(id => maybe.fromNullable(all.find(e => e.id === id)), id)
+)
+
+export const getMode = createSelector(
+  getState,
+  state => state.mode
+)

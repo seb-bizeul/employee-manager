@@ -28,4 +28,8 @@ describe('Employee selectors', () => {
     expect(selectors.getSelectedId(appState)).toEqual(employeeState.selectedId)
   })
 
+  test('getMode', () => {
+    expect(selectors.getMode(appState)).toEqual(employeeState.mode)
+  })
+
 })

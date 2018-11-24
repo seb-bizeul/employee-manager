@@ -19,3 +19,7 @@ export const createFromTuple = (tuple: EmployeeTuple): Employee => ({
   email: tuple[3],
   phone: tuple[4]
 })
+
+export const isNotValid = (employee: Employee) => {
+  return !employee.email.match(/\S+@\S+\.\S+/)
+}

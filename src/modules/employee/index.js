@@ -2,8 +2,11 @@
 import reducer, { initialState } from './reducer'
 import * as actions from './actions'
 import * as saga from './saga'
+import EmployeePage from './components/EmployeePage'
 import Employees from './components/Employees'
-import EmployeesContainer from './containers/EmployeesContainer'
+import EmployeeForm from './components/EmployeeForm'
+import EmployeePageContainer from './containers/EmployeePageContainer'
+import EmployeeFormContainer from './containers/EmployeeFormContainer'
 
 export default {
   reducer,
@@ -11,7 +14,10 @@ export default {
   actions,
   saga,
   components: {
+    EmployeePage,
     Employees,
-    EmployeesContainer
+    EmployeePageContainer,
+    EmployeeFormContainer,
+    EmployeeForm
   }
 }

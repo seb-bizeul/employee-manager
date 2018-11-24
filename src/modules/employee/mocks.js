@@ -27,5 +27,7 @@ export const employees: Employee[] = [
 
 export const employeeState: EmployeeState = {
   all: toMap(employees),
-  selectedId: maybe.of(employees[0].id)
+  selectedId: maybe.of(employees[0].id),
+  mode: 'create',
+  unvalid: {}
 }

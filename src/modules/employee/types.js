@@ -16,15 +16,60 @@ export type Employee = $ReadOnly<{|
 
 export type EmployeeTuple = [ string, string, Gender, string, number ]
 
+export type FormMode = 'create' | 'edit'
+
 export type EmployeeState = $ReadOnly<{|
   all: Map<Employee>,
-  selectedId: Maybe<string>
+  selectedId: Maybe<string>,
+  mode: FormMode,
+  unvalid: Map<Employee>
 |}>
 
 export type Populate = $ReadOnly<{|
   type: 'employee/POPULATE',
-  payload: Employee[]  
+  payload: Employee[]
+|}>
+
+export type Select = $ReadOnly<{|
+  type: 'employee/SELECT',
+  payload: string
+|}>
+
+export type SetMode = $ReadOnly<{|
+  type: 'employee/SET_MODE',
+  payload: FormMode
+|}>
+
+export type Update = $ReadOnly<{
+  type: 'employee/UPDATE',
+  payload: Employee
+}>
+
+export type SendInvitations = $ReadOnly<{|
+  type: 'employee/SEND_INVITATIONS',
+  payload: Employee[]
+|}>
+
+export type SendInvitationsSuccess = $ReadOnly<{|
+  type: 'employee/SEND_INVITATIONS_SUCCESS'
+|}>
+
+export type Validate = $ReadOnly<{|
+  type: 'employee/VALIDATE',
+  payload: Employee[]
+|}>
+
+export type ValidationFailure = $ReadOnly<{|
+  type: 'employee/VALIDATION_FAILURE',
+  payload: Employee[]
 |}>
 
 export type EmployeeAction =
   | Populate
+  | Select
+  | SetMode
+  | Update
+  | SendInvitations
+  | SendInvitationsSuccess
+  | Validate
+  | ValidationFailure
