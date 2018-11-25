@@ -22,7 +22,9 @@
     "redux-saga": "^0.16.2",
     "reselect": "^4.0.0",
     "uuid": "^3.3.2",
-    "yup": "^0.26.6"
+    "yup": "^0.26.6",
+    "redux-devtools": "^3.4.2",
+    "redux-devtools-extension": "^2.13.5"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -40,8 +42,6 @@
     "@babel/runtime": "^7.1.5",
     "enzyme": "^3.7.0",
     "enzyme-adapter-react-16": "^1.7.0",
-    "flow-bin": "0.82",
-    "redux-devtools": "^3.4.2",
-    "redux-devtools-extension": "^2.13.5"
+    "flow-bin": "0.82"
   }
 }
