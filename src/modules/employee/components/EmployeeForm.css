@@ -3,6 +3,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: #F2F2F2;
+  border-radius: 4px;
 }
 
 .EmployeeForm > * {
@@ -11,7 +13,6 @@
 
 .EmployeeForm-row {
   display: flex;
-  flex-grow: 1;
   width: 60%;
 }
 

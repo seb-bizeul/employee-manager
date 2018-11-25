@@ -3,6 +3,7 @@ import * as React from 'react'
 import { withFormik } from 'formik'
 import { maybe, pipe, type Maybe } from '@sbizeul/fp-flow'
 
+import * as employeeActions from '../actions'
 import location from '../../location'
 import type { Gender, FormMode, Employee } from '../types'
 import './EmployeeForm.css'
@@ -25,11 +26,23 @@ type Props = $ReadOnly<{|
   updateEmployee: any,
   createEmployee: any,
   mode: FormMode,
+  employee: Maybe<Employee>,
+  resetSelectedId: typeof employeeActions.resetSelectedId,
   goToEmployeeList: typeof location.actions.employee,
-  employee: Maybe<Employee>
+  notFound: typeof location.actions.notFound
 |}>
 
 export class EmployeeForm extends React.Component<FormikProps & Props> {
+
+  componentDidMount() {
+    if (maybe.isNothing(this.props.employee) && this.props.mode === 'edit') {
+      this.props.notFound()
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.resetSelectedId()
+  }
 
   mergeEmployee = (values: FormValues) => (employee: Employee) =>
     ({ ...employee, ...values })
@@ -127,7 +140,7 @@ export default (withFormik({
   mapPropsToValues: ({ employee }) => ({
     first_name: pipe(maybe.map(e => e.first_name), maybe.getOrElse(() => ''))(employee),
     last_name: pipe(maybe.map(e => e.last_name), maybe.getOrElse(() => ''))(employee),
-    gender: pipe(maybe.map(e => e.gender), maybe.getOrElse(() => ''))(employee),
+    gender: pipe(maybe.map(e => e.gender), maybe.getOrElse(() => 'M'))(employee),
     email: pipe(maybe.map(e => e.email), maybe.getOrElse(() => ''))(employee),
     phone: pipe(maybe.map(e => e.phone), maybe.getOrElse(() => ''))(employee)
   }),

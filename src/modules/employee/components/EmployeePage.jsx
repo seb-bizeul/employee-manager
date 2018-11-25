@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 
-import Employees from './Employees'
+import EmployeeTable from './EmployeeTable'
 import * as employeeActions from '../actions'
 import location from '../../location'
 import type { Employee } from '../types'
@@ -12,10 +12,11 @@ type Props = $ReadOnly<{|
   employees: Employee[],
   employeeCreate: typeof location.actions.employeeCreate,
   sendInvitations: typeof employeeActions.sendInvitations,
-  select: typeof employeeActions.select
+  select: typeof employeeActions.select,
+  remove: typeof employeeActions.remove
 |}>
 
-export default function EmployeePage({ employees, employeeCreate, select, sendInvitations }: Props) {
+export default function EmployeePage({ employees, employeeCreate, select, sendInvitations, remove }: Props) {
   return (
     <div className='EmployeePage'>
       <div className='EmployeePage-topBar'>
@@ -35,7 +36,7 @@ export default function EmployeePage({ employees, employeeCreate, select, sendIn
           </button>
         </div>
       </div>
-      <Employees employees={employees} select={select}/>
+      <EmployeeTable employees={employees} select={select} remove={remove}/>
     </div>
   )
 }

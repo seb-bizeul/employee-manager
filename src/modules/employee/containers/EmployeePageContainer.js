@@ -15,7 +15,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   employeeCreate: location.actions.employeeCreate,
   select: employeeActions.select,
-  sendInvitations: employeeActions.sendInvitations
+  sendInvitations: employeeActions.sendInvitations,
+  remove: employeeActions.remove
 }
 
 export default (connect(

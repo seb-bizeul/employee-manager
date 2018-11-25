@@ -6,20 +6,22 @@ import EmployeeForm from '../components/EmployeeForm'
 import * as employeeSelectors from '../selectors'
 import * as employeeActions from '../actions'
 import location from '../../location'
+import type { FormMode } from '../types'
 
 
 const mapStateToProps = state => ({
-  employee: employeeSelectors.getSelected(state),
-  mode: employeeSelectors.getMode(state)
+  employee: employeeSelectors.getSelected(state)
 })
 
 const mapDispatchToProps = {
+  createEmployee: employeeActions.create,
+  updateEmployee: employeeActions.update,
+  resetSelectedId: employeeActions.resetSelectedId,
   goToEmployeeList: location.actions.employee,
-  createEmployee: () => {},
-  updateEmployee: employeeActions.update
+  notFound: location.actions.notFound
 }
 
 export default (connect(
   mapStateToProps,
   mapDispatchToProps,
-)(EmployeeForm): React.ComponentType<{}>)
+)(EmployeeForm): React.ComponentType<{ mode: FormMode }>)
