@@ -38,6 +38,9 @@ describe('Employee saga', () => {
     const gen = saga.select(action)
   
     expect(gen.next().value).toEqual(
+      put(employeeActions.setMode('edit'))
+    )
+    expect(gen.next().value).toEqual(
       put(location.actions.employeeEdit(id))
     )
     expect(gen.next().done).toBeTruthy()
@@ -69,16 +72,9 @@ describe('Employee saga', () => {
     expect(gen.next().done).toBeTruthy()
   })
 
-  test('onUpdate', () => {
-    const gen = saga.onUpdate()
-    expect(gen.next().value).toEqual(
-      put(location.actions.employee())
-    )
-    expect(gen.next().done).toBeTruthy()
-  })
-
   test('root', () => {
     const gen = saga.root()
+  
     expect(gen.next().value).toEqual(
       takeEvery(csv.actions.PARSE_SUCCESS, saga.populate)
     )
@@ -89,8 +85,12 @@ describe('Employee saga', () => {
       takeEvery(employeeActions.SEND_INVITATIONS, saga.sendInvitations)
     )
     expect(gen.next().value).toEqual(
-      takeEvery(employeeActions.UPDATE, saga.onUpdate)
+      takeEvery(employeeActions.UPDATE, saga.goToEmployeeList)
     )
+    expect(gen.next().value).toEqual(
+      takeEvery(employeeActions.CREATE, saga.goToEmployeeList)
+    )
+
     expect(gen.next().done).toBeTruthy()
   })
 

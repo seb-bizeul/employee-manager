@@ -45,6 +45,16 @@ export type Update = $ReadOnly<{
   payload: Employee
 }>
 
+export type Create = $ReadOnly<{
+  type: 'employee/CREATE',
+  payload: Employee
+}>
+
+export type Remove = $ReadOnly<{
+  type: 'employee/REMOVE',
+  payload: string
+}>
+
 export type SendInvitations = $ReadOnly<{|
   type: 'employee/SEND_INVITATIONS',
   payload: Employee[]
@@ -64,12 +74,19 @@ export type ValidationFailure = $ReadOnly<{|
   payload: Employee[]
 |}>
 
+export type ResetSelectedId = $ReadOnly<{|
+  type: 'employee/RESET_SELECTED_ID'
+|}>
+
 export type EmployeeAction =
   | Populate
   | Select
   | SetMode
   | Update
+  | Create
+  | Remove
   | SendInvitations
   | SendInvitationsSuccess
   | Validate
   | ValidationFailure
+  | ResetSelectedId

@@ -28,11 +28,17 @@ const update = (state, action) => {
   return R.set(path, action.payload, state)
 }
 
+const remove = (state, action) => {
+  return R.over(all, R.omit([action.payload]), state)
+}
+
 const setMode = (state, action) => R.set(mode, action.payload, state)
 
 const resetUnvalid = (state, action) => R.set(unvalid, {}, state)
 
 const setUnvalid = (state, action) => R.set(unvalid, toMap(action.payload), state)
+
+const resetSelectedId = (state, action) => R.over(selectedId, maybe.nothing, state)
 
 export default function reducer(state: EmployeeState = initialState, action: EmployeeAction) {
   switch (action.type) {
@@ -40,8 +46,11 @@ export default function reducer(state: EmployeeState = initialState, action: Emp
   case employeeActions.SELECT: return select(state, action)
   case employeeActions.SET_MODE: return setMode(state, action)
   case employeeActions.UPDATE: return update(state, action)
+  case employeeActions.CREATE: return update(state, action)
+  case employeeActions.REMOVE: return remove(state, action)
   case employeeActions.SEND_INVITATIONS_SUCCESS: return resetUnvalid(state, action)
   case employeeActions.VALIDATION_FAILURE: return setUnvalid(state, action)
+  case employeeActions.RESET_SELECTED_ID: return resetSelectedId(state, action)
   default: return state
   }
 }

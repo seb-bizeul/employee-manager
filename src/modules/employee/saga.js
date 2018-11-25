@@ -18,6 +18,7 @@ export function* populate(action: ParseSuccess): Saga<*> {
 }
 
 export function* select(action: Select): Saga<*> {
+  yield put(employeeActions.setMode('edit'))
   yield put(location.actions.employeeEdit(action.payload))
 }
 
@@ -33,7 +34,7 @@ export function* sendInvitations(action: SendInvitations): Saga<*> {
   }
 }
 
-export function* onUpdate(): Saga<*> {
+export function* goToEmployeeList(): Saga<*> {
   yield put(location.actions.employee())
 }
 
@@ -41,5 +42,6 @@ export function* root(): Saga<*> {
   yield takeEvery(csv.actions.PARSE_SUCCESS, populate)
   yield takeEvery(employeeActions.SELECT, select)
   yield takeEvery(employeeActions.SEND_INVITATIONS, sendInvitations)
-  yield takeEvery(employeeActions.UPDATE, onUpdate)
+  yield takeEvery(employeeActions.UPDATE, goToEmployeeList)
+  yield takeEvery(employeeActions.CREATE, goToEmployeeList)
 }

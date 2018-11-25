@@ -5,7 +5,7 @@ import { maybe } from '@sbizeul/fp-flow'
 import reducer, { initialState } from '../reducer'
 import * as employeeActions from '../actions'
 import { toMap } from '../models'
-import { employees } from '../mocks'
+import { employees, employeeState } from '../mocks'
 
 
 describe('Employee reducer', () => {
@@ -50,6 +50,31 @@ describe('Employee reducer', () => {
     expect(output.all[employee.id]).toEqual(employee)
   })
 
+  test('create employee', () => {
+    const employee = {
+      email: 'foo.com',
+      last_name: 'created',
+      first_name: 'user',
+      gender: 'M',
+      phone: 667987878
+    }
+    const action = employeeActions.create(employee)
+    const output = reducer(initialState, action)
+    expect(output).toEqual({
+      ...initialState,
+      all: {
+        [action.payload.id]: { ...employee, id: action.payload.id }
+      }
+    })
+  })
+
+  test('remove employee', () => {
+    const id = employees[0].id
+    const action = employeeActions.remove(id)
+    const output = reducer(employeeState, action)
+    expect(output.all[id]).toBeUndefined()
+  })
+
   test('send invitations success', () => {
     const state = {
       ...initialState,
@@ -69,6 +94,19 @@ describe('Employee reducer', () => {
     expect(output).toEqual({
       ...initialState,
       unvalid: toMap(employees)
+    })
+  })
+
+  test('validation failure', () => {
+    const state = {
+      ...initialState,
+      selectedId: maybe.just(uuid())
+    }
+    const action = employeeActions.resetSelectedId()
+    const output = reducer(state, action)
+    expect(output).toEqual({
+      ...initialState,
+      selectedId: maybe.nothing()
     })
   })
 
