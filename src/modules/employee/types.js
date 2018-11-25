@@ -2,6 +2,8 @@
 import type { Maybe } from '@sbizeul/fp-flow'
 
 import type { Map } from '../../helpers/map'
+import type { CsvError } from '../csv/types'
+
 
 export type Gender = 'M' | 'F'
 
@@ -10,8 +12,8 @@ export type Employee = $ReadOnly<{|
   first_name: string,
   last_name: string,
   gender: Gender,
-  email: string,
-  phone: number
+  email_address: string,
+  phone_number: number
 |}>
 
 export type EmployeeTuple = [ string, string, Gender, string, number ]
@@ -19,15 +21,20 @@ export type EmployeeTuple = [ string, string, Gender, string, number ]
 export type FormMode = 'create' | 'edit'
 
 export type EmployeeState = $ReadOnly<{|
-  all: Map<Employee>,
+  all: Employee[],
   selectedId: Maybe<string>,
   mode: FormMode,
-  unvalid: Map<Employee>
+  errors: $ReadOnlyArray<CsvError>
 |}>
 
 export type Populate = $ReadOnly<{|
   type: 'employee/POPULATE',
   payload: Employee[]
+|}>
+
+export type PopulateErrors = $ReadOnly<{|
+  type: 'employee/POPULATE_ERRORS',
+  payload: CsvError[]
 |}>
 
 export type Select = $ReadOnly<{|
@@ -78,8 +85,14 @@ export type ResetSelectedId = $ReadOnly<{|
   type: 'employee/RESET_SELECTED_ID'
 |}>
 
+export type RemoveError = $ReadOnly<{|
+  type: 'employee/REMOVE_ERROR',
+  payload: number
+|}>
+
 export type EmployeeAction =
   | Populate
+  | PopulateErrors
   | Select
   | SetMode
   | Update
@@ -90,3 +103,4 @@ export type EmployeeAction =
   | Validate
   | ValidationFailure
   | ResetSelectedId
+  | RemoveError

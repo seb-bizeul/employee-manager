@@ -48,11 +48,11 @@ const buildColumns = (remove, select) => [
       },
       {
         Header: 'Email',
-        accessor: 'email'
+        accessor: 'email_address'
       },
       {
         Header: 'Phone',
-        accessor: 'phone'
+        accessor: 'phone_number'
       }
     ]
   },

@@ -1,10 +1,12 @@
 // @flow
 import uuid from 'uuid/v4'
+import type { CsvError } from '../csv/types'
 
 import type {
   Employee,
   FormMode,
   Populate,
+  PopulateErrors,
   Select,
   SetMode,
   Update,
@@ -14,11 +16,13 @@ import type {
   SendInvitationsSuccess,
   Validate,
   ValidationFailure,
-  ResetSelectedId
+  ResetSelectedId,
+  RemoveError
 } from './types'
 
 
 export const POPULATE =                 'employee/POPULATE'
+export const POPULATE_ERRORS =          'employee/POPULATE_ERRORS'
 export const SELECT =                   'employee/SELECT'
 export const SET_MODE =                 'employee/SET_MODE'
 export const UPDATE =                   'employee/UPDATE'
@@ -29,10 +33,16 @@ export const SEND_INVITATIONS_SUCCESS = 'employee/SEND_INVITATIONS_SUCCESS'
 export const VALIDATE =                 'employee/VALIDATE'
 export const VALIDATION_FAILURE =       'employee/VALIDATION_FAILURE'
 export const RESET_SELECTED_ID =        'employee/RESET_SELECTED_ID'
+export const REMOVE_ERROR =             'employee/REMOVE_ERROR'
 
 export const populate = (employees: Employee[]): Populate => ({
   type: POPULATE,
   payload: employees
+})
+
+export const populateErrors = (errors: CsvError[]): PopulateErrors => ({
+  type: POPULATE_ERRORS,
+  payload: errors
 })
 
 export const select = (id: string): Select => ({
@@ -84,4 +94,9 @@ export const validationFailure = (employees: Employee[]): ValidationFailure => (
 
 export const resetSelectedId = (): ResetSelectedId => ({
   type: RESET_SELECTED_ID
+})
+
+export const removeError = (rowIndex: number): RemoveError => ({
+  type: REMOVE_ERROR,
+  payload: rowIndex
 })

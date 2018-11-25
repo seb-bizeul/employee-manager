@@ -8,7 +8,7 @@ import type { ParseRequest } from './types'
 
 export const parsePromise = (csvFile: File): Promise<*> => {
   return new Promise((complete, error) => {
-    return Papa.parse(csvFile, { complete, error })
+    return Papa.parse(csvFile, { header: true, complete, error })
   })
 }
 
@@ -16,7 +16,8 @@ export function* parseCsv(action: ParseRequest): Saga<*> {
   const csvFile = action.payload
   try {
     const result = yield call(parsePromise, csvFile)
-    yield put(csvActions.parseSuccess(result))
+    yield put(csvActions.parseSuccess(result.data))
+    yield put(csvActions.parseFailure(result.errors))
   }
   catch (err) {
     yield put(csvActions.parseFailure(err))

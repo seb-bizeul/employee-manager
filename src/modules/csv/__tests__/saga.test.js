@@ -11,15 +11,18 @@ describe('Csv saga', () => {
   test('parseCsv yield expected values', () => {
     const file = new File([''], 'filename', { type: 'text/csv' })
     const action = csvActions.parse(file)
-    const result = []
+    const result = { data: [], errors: [] }
     const err = 'ERROR'
     const gen = saga.parseCsv(action)
   
     expect(gen.next().value).toEqual(
       call(parsePromise, action.payload)
     )
-    expect(gen.next([]).value).toEqual(
-      put(csvActions.parseSuccess(result))
+    expect(gen.next(result).value).toEqual(
+      put(csvActions.parseSuccess(result.data))
+    )
+    expect(gen.next(result).value).toEqual(
+      put(csvActions.parseFailure(result.errors))
     )
 
     expect(gen.throw(err).value).toEqual(

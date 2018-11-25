@@ -4,7 +4,6 @@ import { maybe } from '@sbizeul/fp-flow'
 
 import reducer, { initialState } from '../reducer'
 import * as employeeActions from '../actions'
-import { toMap } from '../models'
 import { employees, employeeState } from '../mocks'
 
 
@@ -15,10 +14,7 @@ describe('Employee reducer', () => {
     const output = reducer(initialState, action)
     expect(output).toEqual({
       ...initialState,
-      all: employees.reduce((acc, e) => {
-        acc[e.id] = e
-        return acc
-      }, {})
+      all: employees
     })
   })
 
@@ -43,28 +39,27 @@ describe('Employee reducer', () => {
   })
 
   test('update employee', () => {
-    const employee = { ...employees[0] }
-    employee.last_name = 'update'
+    const employee = { ...employees[0], last_name: 'update' }
     const action = employeeActions.update(employee)
-    const output = reducer(initialState, action)
-    expect(output.all[employee.id]).toEqual(employee)
+    const output = reducer(employeeState, action)
+    expect(output.all.find(e => e.id === employee.id)).toEqual(employee)
   })
 
   test('create employee', () => {
     const employee = {
-      email: 'foo.com',
+      email_address: 'foo.com',
       last_name: 'created',
       first_name: 'user',
       gender: 'M',
-      phone: 667987878
+      phone_number: 667987878
     }
     const action = employeeActions.create(employee)
     const output = reducer(initialState, action)
     expect(output).toEqual({
       ...initialState,
-      all: {
-        [action.payload.id]: { ...employee, id: action.payload.id }
-      }
+      all: [
+        { ...employee, id: action.payload.id }
+      ]
     })
   })
 
@@ -72,19 +67,20 @@ describe('Employee reducer', () => {
     const id = employees[0].id
     const action = employeeActions.remove(id)
     const output = reducer(employeeState, action)
-    expect(output.all[id]).toBeUndefined()
+    expect(output.all).toEqual(employees.filter(e => e.id !== id))
   })
 
+  // FIXME
   test('send invitations success', () => {
     const state = {
       ...initialState,
-      unvalid: toMap(employees)
+      errors: []
     }
     const action = employeeActions.sendInvitationsSuccess()
     const output = reducer(state, action)
     expect(output).toEqual({
       ...state,
-      unvalid: {}
+      errors: []
     })
   })
 
@@ -93,11 +89,11 @@ describe('Employee reducer', () => {
     const output = reducer(initialState, action)
     expect(output).toEqual({
       ...initialState,
-      unvalid: toMap(employees)
+      errors: employees
     })
   })
 
-  test('validation failure', () => {
+  test('reset selected id', () => {
     const state = {
       ...initialState,
       selectedId: maybe.just(uuid())
@@ -107,6 +103,22 @@ describe('Employee reducer', () => {
     expect(output).toEqual({
       ...initialState,
       selectedId: maybe.nothing()
+    })
+  })
+
+  test('remove errors', () => {
+    const index = 0
+    const state = {
+      ...initialState,
+      errors: [
+        { row: index, code: '', message: '', type: '' }
+      ]
+    }
+    const action = employeeActions.removeError(index)
+    const output = reducer(state, action)
+    expect(output).toEqual({
+      ...initialState,
+      errors: []
     })
   })
 

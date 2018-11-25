@@ -12,7 +12,7 @@ describe('Employee selectors', () => {
   }
 
   test('getAll', () => {
-    expect(selectors.getAll(appState)).toEqual(map.toArray(employeeState.all))
+    expect(selectors.getAll(appState)).toEqual(employeeState.all)
   })
 
   test('getOne unknown employee', () => {
@@ -24,12 +24,20 @@ describe('Employee selectors', () => {
     expect(selectors.getOne(appState, employee.id)).toEqual(maybe.just(employee))
   })
 
+  test('getIdByRowIndex', () => {
+    expect(selectors.getIdByRowIndex(appState, 1)).toEqual(employees[1].id)
+  })
+
   test('getSelectedId', () => {
     expect(selectors.getSelectedId(appState)).toEqual(employeeState.selectedId)
   })
 
   test('getMode', () => {
     expect(selectors.getMode(appState)).toEqual(employeeState.mode)
+  })
+
+  test('getErrors', () => {
+    expect(selectors.getErrors(appState)).toEqual(employeeState.errors)
   })
 
 })

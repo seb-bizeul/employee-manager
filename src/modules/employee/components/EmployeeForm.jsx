@@ -13,8 +13,8 @@ type FormValues = $ReadOnly<{|
   first_name: string,
   last_name: string,
   gender: Gender,
-  email: string,
-  phone: number  
+  email_address: string,
+  phone_number: number  
 |}>
 
 type FormikProps = $ReadOnly<{|
@@ -35,6 +35,7 @@ type Props = $ReadOnly<{|
 export class EmployeeForm extends React.Component<FormikProps & Props> {
 
   componentDidMount() {
+    console.log(this.props.employee)
     if (maybe.isNothing(this.props.employee) && this.props.mode === 'edit') {
       this.props.notFound()
     }
@@ -100,8 +101,8 @@ export class EmployeeForm extends React.Component<FormikProps & Props> {
           <label htmlFor='email'>Email</label>
           <input
             type='email'
-            value={values.email}
-            name='email'
+            value={values.email_address}
+            name='email_address'
             onChange={handleChange}
             className='EmployeeForm-inputText'
           />
@@ -110,8 +111,8 @@ export class EmployeeForm extends React.Component<FormikProps & Props> {
           <label htmlFor='phone'>Phone</label>
           <input
             type='phone'
-            value={values.phone}
-            name='phone'
+            value={values.phone_number}
+            name='phone_number'
             onChange={handleChange}
             className='EmployeeForm-inputText'
           />
@@ -141,8 +142,8 @@ export default (withFormik({
     first_name: pipe(maybe.map(e => e.first_name), maybe.getOrElse(() => ''))(employee),
     last_name: pipe(maybe.map(e => e.last_name), maybe.getOrElse(() => ''))(employee),
     gender: pipe(maybe.map(e => e.gender), maybe.getOrElse(() => 'M'))(employee),
-    email: pipe(maybe.map(e => e.email), maybe.getOrElse(() => ''))(employee),
-    phone: pipe(maybe.map(e => e.phone), maybe.getOrElse(() => ''))(employee)
+    email_address: pipe(maybe.map(e => e.email_address), maybe.getOrElse(() => ''))(employee),
+    phone_number: pipe(maybe.map(e => e.phone_number), maybe.getOrElse(() => ''))(employee)
   }),
   handleSubmit: () => {},
   enableReinitialize: true

@@ -1,8 +1,8 @@
 // @flow
 import { createSelector } from 'reselect'
 import { maybe } from '@sbizeul/fp-flow'
+import * as R from 'ramda'
 
-import * as map from '../../helpers/map'
 import type { EmployeeState } from './types'
 
 
@@ -14,12 +14,17 @@ export const getState = (appState: AppState) => appState.employee
 
 export const getAll = createSelector(
   getState,
-  state => map.toArray(state.all)
+  state => state.all
 )
 
 export const getOne = (appState: AppState, id: string) => {
-  return maybe.fromNullable(appState.employee.all[id])
+  return maybe.fromNullable(appState.employee.all.find(e => e.id === id))
 }
+
+
+export const getIdByRowIndex = R.curry((appState: AppState, row: number) => {
+  return appState.employee.all[row].id
+})
 
 export const getSelectedId = createSelector(
   getState,
@@ -34,4 +39,9 @@ export const getSelected = createSelector(
 export const getMode = createSelector(
   getState,
   state => state.mode
+)
+
+export const getErrors = createSelector(
+  getState,
+  state => state.errors
 )

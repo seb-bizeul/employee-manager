@@ -1,7 +1,7 @@
 // @flow
 import uuid from 'uuid/v4'
 
-import type { Employee, EmployeeTuple } from './types'
+import type { Employee } from './types'
 
 
 export const toMap = (employees: Employee[]) => {
@@ -11,15 +11,11 @@ export const toMap = (employees: Employee[]) => {
   }, {})
 }
 
-export const createFromTuple = (tuple: EmployeeTuple): Employee => ({
+export const createEmployee = (employee: $Diff<Employee, { id: string }>): Employee => ({
   id: uuid(),
-  first_name: tuple[0],
-  last_name: tuple[1],
-  gender: tuple[2],
-  email: tuple[3],
-  phone: tuple[4]
+  ...employee
 })
 
 export const isNotValid = (employee: Employee) => {
-  return !employee.email.match(/\S+@\S+\.\S+/)
+  return !employee.email_address.match(/\S+@\S+\.\S+/)
 }

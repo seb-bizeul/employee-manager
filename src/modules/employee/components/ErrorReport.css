@@ -1,0 +1,35 @@
+.CsvErrorReport {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.CsvErrorReport-error {
+  background-color: #F2F2F2;
+  border-radius: 4px;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.CsvErrorReport-error--edit {
+  margin-right: 16px;
+  cursor: pointer;
+}
+
+.CsvErrorReport-error--delete {
+  cursor: pointer;
+}
+
+.CsvErrorReport-noErrors {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.CsvErrorReport-noErrors--smile {
+  font-size: 128px;
+  color: lightgray;
+  margin-bottom: 32px;
+}

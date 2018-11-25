@@ -18,6 +18,7 @@ const matchActionType = (type: string) => {
   case location.actions.EMPLOYEE: return <employee.components.EmployeePageContainer/>
   case location.actions.EMPLOYEE_EDIT: return <employee.components.EmployeeFormContainer mode='edit'/>
   case location.actions.EMPLOYEE_CREATE: return <employee.components.EmployeeFormContainer mode='create'/>
+  case location.actions.ERROR_REPORT: return <employee.components.ErrorReportContainer/>
   case NOT_FOUND: return <NotFound/>
   default: return null
   }

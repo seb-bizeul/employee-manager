@@ -1,3 +1,8 @@
+.EmployeePage {
+  display: flex;
+  flex-direction: column;
+}
+
 .EmployeePage-topBar {
   display: flex;
   margin-bottom: 32px;
@@ -16,4 +21,23 @@
 
 .EmployeePage-topBar--button:first-child {
   margin-right: 8px;
+}
+
+.EmployeePage-errMessage {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 4px;
+  background-color: #F2F2F2;
+  padding: 8px;
+  margin-bottom: 16px;
+  border: 1px solid #D22628;
+}
+
+.EmployeePage-errMessage--link {
+  color: #521BBE;
+}
+
+.EmployeePage-errMessage--msg {
+  color: #D22628;
 }

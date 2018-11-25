@@ -9,7 +9,8 @@ import location from '../../location'
 
 
 const mapStateToProps = state => ({
-  employees: employeeSelectors.getAll(state)
+  employees: employeeSelectors.getAll(state),
+  errors: employeeSelectors.getErrors(state)
 })
 
 const mapDispatchToProps = {

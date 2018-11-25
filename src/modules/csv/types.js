@@ -1,4 +1,10 @@
 // @flow
+export type CsvError = $ReadOnly<{|
+  code: string,
+  message: string,
+  row: number,
+  type: string
+|}>
 
 export type ParseRequest = $ReadOnly<{|
   type: 'csv/PARSE_REQUEST',

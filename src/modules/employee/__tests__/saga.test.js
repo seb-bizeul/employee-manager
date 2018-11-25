@@ -11,22 +11,14 @@ import location from '../../location'
 
 describe('Employee saga', () => {
 
-  const userTuple = [
-    'John',
-    'Doe',
-    'M',
-    'john@gmail.com',
-    5676576765
-  ]
-
   test('populate', () => {
-    const action = csv.actions.parseSuccess({ data: [userTuple] })
+    const action = csv.actions.parseSuccess(employees)
     const gen = saga.populate(action)
   
     expect(gen.next().value).toEqual(
-      put(employeeActions.populate([]))
+      put(employeeActions.populate(employees))
     )
-    expect(gen.next().value).toEqual(
+    expect(gen.next(employees).value).toEqual(
       put(location.actions.employee())
     )
     expect(gen.next().done).toBeTruthy()
@@ -60,8 +52,7 @@ describe('Employee saga', () => {
   })
 
   test('send invalid invitations', () => {
-    const employee = { ...employees[0] }
-    employee.email = 'invalid'
+    const employee = { ...employees[0], email_address: 'invalid' }
     const invalid = [employee]
     const action = employeeActions.sendInvitations(invalid)
     const gen = saga.sendInvitations(action)
@@ -77,6 +68,9 @@ describe('Employee saga', () => {
   
     expect(gen.next().value).toEqual(
       takeEvery(csv.actions.PARSE_SUCCESS, saga.populate)
+    )
+    expect(gen.next().value).toEqual(
+      takeEvery(csv.actions.PARSE_FAILURE, saga.populateErrors)
     )
     expect(gen.next().value).toEqual(
       takeEvery(employeeActions.SELECT, saga.select)

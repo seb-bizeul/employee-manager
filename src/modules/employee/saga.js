@@ -3,18 +3,20 @@ import { put, takeEvery } from 'redux-saga/effects'
 import type { Saga } from 'redux-saga'
 
 import * as employeeActions from './actions'
-import { createFromTuple, isNotValid } from './models'
+import { createEmployee, isNotValid } from './models'
 import csv from '../csv'
 import location from '../location'
 import type { Employee, Select, SendInvitations } from './types'
-import type { ParseSuccess } from '../csv/types'
+import type { ParseSuccess, ParseFailure } from '../csv/types'
 
 export function* populate(action: ParseSuccess): Saga<*> {
-  const employees: Employee[] = action.payload.data
-    .map(createFromTuple)
-    .filter((e, idx) => idx !== 0)
+  const employees: Employee[] = action.payload.map(createEmployee)
   yield put(employeeActions.populate(employees))
   yield put(location.actions.employee())
+}
+
+export function* populateErrors(action: ParseFailure): Saga<*> {
+  yield put(employeeActions.populateErrors(action.payload))
 }
 
 export function* select(action: Select): Saga<*> {
@@ -40,6 +42,7 @@ export function* goToEmployeeList(): Saga<*> {
 
 export function* root(): Saga<*> {
   yield takeEvery(csv.actions.PARSE_SUCCESS, populate)
+  yield takeEvery(csv.actions.PARSE_FAILURE, populateErrors)
   yield takeEvery(employeeActions.SELECT, select)
   yield takeEvery(employeeActions.SEND_INVITATIONS, sendInvitations)
   yield takeEvery(employeeActions.UPDATE, goToEmployeeList)
