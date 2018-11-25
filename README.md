@@ -1,4 +1,4 @@
-## Want to test ?
+## Give it a try ?
 App is deployed on Heroku at https://spendesk.herokuapp.com/
 
 ## How to use
