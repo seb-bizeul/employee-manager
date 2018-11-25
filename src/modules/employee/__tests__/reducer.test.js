@@ -51,7 +51,7 @@ describe('Employee reducer', () => {
       last_name: 'created',
       first_name: 'user',
       gender: 'M',
-      phone_number: 667987878
+      phone_number: '667987878'
     }
     const action = employeeActions.create(employee)
     const output = reducer(initialState, action)

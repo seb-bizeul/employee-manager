@@ -1,7 +1,6 @@
 // @flow
 import type { Maybe } from '@sbizeul/fp-flow'
 
-import type { Map } from '../../helpers/map'
 import type { CsvError } from '../csv/types'
 
 
@@ -13,7 +12,7 @@ export type Employee = $ReadOnly<{|
   last_name: string,
   gender: Gender,
   email_address: string,
-  phone_number: number
+  phone_number: string
 |}>
 
 export type EmployeeTuple = [ string, string, Gender, string, number ]

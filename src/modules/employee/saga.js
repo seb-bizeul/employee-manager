@@ -1,13 +1,15 @@
 // @flow
-import { put, takeEvery } from 'redux-saga/effects'
+import { put, takeEvery, call, select as selectFromState} from 'redux-saga/effects'
 import type { Saga } from 'redux-saga'
 
 import * as employeeActions from './actions'
-import { createEmployee, isNotValid } from './models'
+import * as employeeSelectors from './selectors'
+import { createEmployee, isNotValid, buildFormatError } from './models'
 import csv from '../csv'
 import location from '../location'
-import type { Employee, Select, SendInvitations } from './types'
+import type { Employee, Select } from './types'
 import type { ParseSuccess, ParseFailure } from '../csv/types'
+
 
 export function* populate(action: ParseSuccess): Saga<*> {
   const employees: Employee[] = action.payload.map(createEmployee)
@@ -24,15 +26,29 @@ export function* select(action: Select): Saga<*> {
   yield put(location.actions.employeeEdit(action.payload))
 }
 
-export function* sendInvitations(action: SendInvitations): Saga<*> {
-  const employees = action.payload
-  const unvalidEmployees = employees.filter(isNotValid)
+export function* validate(): Generator<*, *, *> {
+  const employees = yield selectFromState(employeeSelectors.getAll)
+  const unvalidEmployees = employees
+    .map((e, idx) => ({ ...e, row: idx }))
+    .filter(isNotValid)
+    .map(buildFormatError)
+  if (unvalidEmployees.length) {
+    yield put(employeeActions.validationFailure(unvalidEmployees))
+  }
+}
+
+export function* sendInvitations(): Saga<*> {
+  const employees = yield selectFromState(employeeSelectors.getAll)
+  const unvalidEmployees = employees
+    .map((e, idx) => ({ ...e, row: idx }))
+    .filter(isNotValid)
+    .map(buildFormatError)
   if (unvalidEmployees.length) {
     yield put(employeeActions.validationFailure(unvalidEmployees))
   }
   else {
-    yield put(employeeActions.sendInvitations(employees))
     yield put(employeeActions.sendInvitationsSuccess())
+    yield call(window.alert, `${employees.length} invitations send`)
   }
 }
 
@@ -47,4 +63,5 @@ export function* root(): Saga<*> {
   yield takeEvery(employeeActions.SEND_INVITATIONS, sendInvitations)
   yield takeEvery(employeeActions.UPDATE, goToEmployeeList)
   yield takeEvery(employeeActions.CREATE, goToEmployeeList)
+  yield takeEvery(employeeActions.REMOVE_ERROR, validate)
 }

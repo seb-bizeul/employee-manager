@@ -12,7 +12,7 @@ export const employees: Employee[] = [
     first_name: 'Paxon',
     gender: 'M',
     last_name: 'Antunez',
-    phone_number: 5541693500
+    phone_number: '554-169-3500'
   },
   {
     id: uuid(),
@@ -20,7 +20,7 @@ export const employees: Employee[] = [
     first_name: 'Ignatius',
     gender: 'M',
     last_name: 'Faustian',
-    phone_number: 5139331835
+    phone_number: '513-933-1835'
   }
 ]
 

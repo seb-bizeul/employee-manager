@@ -25,7 +25,10 @@ const select = (state, action) => R.set(selectedId, maybe.just(action.payload), 
 const update = (state, action) => {
   const index = R.findIndex(e => e.id === action.payload.id, state.all)
   const path = R.compose(all, R.lensIndex(index))
-  return R.set(path, action.payload, state)
+  return R.pipe(
+    R.set(path, action.payload),
+    R.over(errors, R.filter(e => e.row !== index))
+  )(state)
 }
 
 const create = (state, action) =>

@@ -1,10 +1,11 @@
 // @flow
 import * as React from 'react'
-import { withFormik, type FormikErrors } from 'formik'
+import { withFormik, type FormikErrors, type FormikTouched } from 'formik'
 import { maybe, pipe, type Maybe } from '@sbizeul/fp-flow'
 import * as Yup from 'yup'
 
 import * as employeeActions from '../actions'
+import * as models from '../models'
 import location from '../../location'
 import type { Gender, FormMode, Employee } from '../types'
 import './EmployeeForm.css'
@@ -20,7 +21,11 @@ type FormValues = $ReadOnly<{|
 
 type FormikProps = $ReadOnly<{|
   values: FormValues,
-  handleChange: Event => any
+  handleChange: { target: HTMLInputElement } => any,
+  errors: FormikErrors<FormValues>,
+  touched: FormikTouched<FormValues>,
+  setTouched: FormikTouched<FormValues> => any,
+  submitForm: () => any
 |}>
 
 type Props = $ReadOnly<{|
@@ -28,7 +33,6 @@ type Props = $ReadOnly<{|
   createEmployee: any,
   mode: FormMode,
   employee: Maybe<Employee>,
-  errors: FormikErrors<FormValues>,
   resetSelectedId: typeof employeeActions.resetSelectedId,
   goToEmployeeList: typeof location.actions.employee,
   notFound: typeof location.actions.notFound
@@ -36,9 +40,16 @@ type Props = $ReadOnly<{|
 
 export class EmployeeForm extends React.Component<FormikProps & Props> {
 
+  isEditMode() {
+    return this.props.mode === 'edit'
+  }
+
   componentDidMount() {
-    if (maybe.isNothing(this.props.employee) && this.props.mode === 'edit') {
+    if (maybe.isNothing(this.props.employee) && this.isEditMode()) {
       this.props.notFound()
+    }
+    if (this.isEditMode()) {
+      this.props.submitForm()
     }
   }
 
@@ -66,8 +77,13 @@ export class EmployeeForm extends React.Component<FormikProps & Props> {
     return !Object.keys(this.props.errors).length
   }
 
+  handleChange = (e: { target: HTMLInputElement }) => {
+    this.props.setTouched({ ...this.props.touched, [e.target.name]: true })
+    this.props.handleChange(e)
+  }
+
   render() {
-    const { values, handleChange, errors } = this.props
+    const { values, errors, touched } = this.props
     return (
       <div className='EmployeeForm'>
         <div className='EmployeeForm-row'>
@@ -77,10 +93,12 @@ export class EmployeeForm extends React.Component<FormikProps & Props> {
               type='text'
               value={values.first_name}
               name='first_name'
-              onChange={handleChange}
+              onChange={this.handleChange}
               className='EmployeeForm-inputText'
             />
-            <div className='EmployeeForm-row--input---error'>{errors.first_name}</div>
+            <div className='EmployeeForm-row--input---error'>
+              {touched.first_name && errors.first_name}
+            </div>
           </div>
         </div>
         <div className='EmployeeForm-row'>
@@ -90,10 +108,12 @@ export class EmployeeForm extends React.Component<FormikProps & Props> {
               type='text'
               value={values.last_name}
               name='last_name'
-              onChange={handleChange}
+              onChange={this.handleChange}
               className='EmployeeForm-inputText'
             />
-            <div className='EmployeeForm-row--input---error'>{errors.last_name}</div>
+            <div className='EmployeeForm-row--input---error'>
+              {touched.last_name && errors.last_name}
+            </div>
           </div>
         </div>
         <div className='EmployeeForm-row'>
@@ -102,7 +122,7 @@ export class EmployeeForm extends React.Component<FormikProps & Props> {
             <select
               name='gender'
               value={values.gender}
-              onChange={handleChange}
+              onChange={this.handleChange}
               className='EmployeeForm-inputSelect'
             >
               <option value='M'>Male</option>
@@ -117,10 +137,12 @@ export class EmployeeForm extends React.Component<FormikProps & Props> {
               type='email'
               value={values.email_address}
               name='email_address'
-              onChange={handleChange}
+              onChange={this.handleChange}
               className='EmployeeForm-inputText'
             />
-            <div className='EmployeeForm-row--input---error'>{errors.email_address}</div>
+            <div className='EmployeeForm-row--input---error'>
+              {touched.email_address && errors.email_address}
+            </div>
           </div>
         </div>
         <div className='EmployeeForm-row'>
@@ -130,10 +152,12 @@ export class EmployeeForm extends React.Component<FormikProps & Props> {
               type='phone'
               value={values.phone_number}
               name='phone_number'
-              onChange={handleChange}
+              onChange={this.handleChange}
               className='EmployeeForm-inputText'
               />
-            <div className='EmployeeForm-row--input---error'>{errors.phone_number}</div>
+            <div className='EmployeeForm-row--input---error'>
+              {touched.phone_number && errors.phone_number}
+            </div>
           </div>
         </div>
         <div className='EmployeeForm-submitBar'>
@@ -177,12 +201,14 @@ const validationSchema = Yup.object().shape({
 export default (withFormik({
   validationSchema,
   mapPropsToValues: ({ employee }) => ({
-    first_name: pipe(maybe.map(e => e.first_name), maybe.getOrElse(() => ''))(employee),
-    last_name: pipe(maybe.map(e => e.last_name), maybe.getOrElse(() => ''))(employee),
-    gender: pipe(maybe.map(e => e.gender), maybe.getOrElse(() => 'M'))(employee),
-    email_address: pipe(maybe.map(e => e.email_address), maybe.getOrElse(() => ''))(employee),
-    phone_number: pipe(maybe.map(e => e.phone_number), maybe.getOrElse(() => ''))(employee)
+    first_name: models.getFirstName(employee),
+    last_name: models.getLastName(employee),
+    gender: models.getGender(employee),
+    email_address: models.getEmailAddress(employee),
+    phone_number: models.getPhoneNumber(employee)
   }),
   handleSubmit: () => {},
-  enableReinitialize: true
+  enableReinitialize: true,
+  // validateOnBlur: true,
+  // validateOnChange: false
 })((EmployeeForm: any)): React.ComponentType<{}>)

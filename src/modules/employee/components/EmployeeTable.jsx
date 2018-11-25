@@ -2,6 +2,7 @@
 import React from 'react'
 import ReactTable from 'react-table'
 import { FaTimes, FaEdit } from 'react-icons/fa'
+import Gravatar from 'react-gravatar'
 import 'react-table/react-table.css'
 
 import * as employeeActions  from '../actions'
@@ -29,6 +30,13 @@ const buildColumns = (remove, select) => [
   {
     Header: 'Name',
     columns: [
+      {
+        Header: 'Avatar',
+        accessor: 'email_address',
+        Cell: ({ value }) => (<Gravatar email={value} size={25}/>),
+        width: 80,
+        style: { textAlign: 'center' }
+      },
       {
         Header: 'First Name',
         accessor: 'first_name'

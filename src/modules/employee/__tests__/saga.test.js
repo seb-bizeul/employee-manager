@@ -1,8 +1,10 @@
 // @flow
-import { put, takeEvery } from 'redux-saga/effects'
+import { put, takeEvery, select, call } from 'redux-saga/effects'
 import uuid from 'uuid/v4'
 
 import * as saga from '../saga'
+import { buildFormatError } from '../models'
+import * as employeeSelectors from '../selectors'
 import * as employeeActions from '../actions'
 import { employees } from '../mocks'
 import csv from '../../csv'
@@ -39,26 +41,31 @@ describe('Employee saga', () => {
   })
 
   test('send valid invitations', () => {
-    const action = employeeActions.sendInvitations(employees)
-    const gen = saga.sendInvitations(action)
-  
+    const gen = saga.sendInvitations()
+
     expect(gen.next().value).toEqual(
-      put(employeeActions.sendInvitations(employees))
+      select(employeeSelectors.getAll)
     )
-    expect(gen.next().value).toEqual(
+    expect(gen.next(employees).value).toEqual(
       put(employeeActions.sendInvitationsSuccess())
+    )
+    expect(gen.next(employees).value).toEqual(
+      call(window.alert, `${employees.length} invitations send`)
     )
     expect(gen.next().done).toBeTruthy()
   })
 
   test('send invalid invitations', () => {
-    const employee = { ...employees[0], email_address: 'invalid' }
-    const invalid = [employee]
-    const action = employeeActions.sendInvitations(invalid)
-    const gen = saga.sendInvitations(action)
-  
+    const invalidEmployee = { ...employees[0], email_address: 'invalid', row: 0 }
+    const invalidEmployees = [invalidEmployee]
+    const gen = saga.sendInvitations()
+
     expect(gen.next().value).toEqual(
-      put(employeeActions.validationFailure(invalid))
+      select(employeeSelectors.getAll)
+    )
+    expect(gen.next(invalidEmployees).value).toEqual(
+      // $FlowFixMe
+      put(employeeActions.validationFailure(invalidEmployees.map(buildFormatError)))
     )
     expect(gen.next().done).toBeTruthy()
   })
@@ -83,6 +90,9 @@ describe('Employee saga', () => {
     )
     expect(gen.next().value).toEqual(
       takeEvery(employeeActions.CREATE, saga.goToEmployeeList)
+    )
+    expect(gen.next().value).toEqual(
+      takeEvery(employeeActions.REMOVE_ERROR, saga.validate)
     )
 
     expect(gen.next().done).toBeTruthy()
