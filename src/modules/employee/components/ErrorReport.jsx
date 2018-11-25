@@ -1,8 +1,10 @@
 // @flow
 import React from 'react'
 import { FaEdit, FaTimes, FaSmile } from 'react-icons/fa'
+import Link from 'redux-first-router-link'
 
 import * as employeeActions from '../actions'
+import location from '../../location'
 import type { CsvError } from '../../csv/types'
 import './ErrorReport.css'
 
@@ -43,6 +45,12 @@ export default function ErrorReport(props: Props) {
       <div className='CsvErrorReport-noErrors'>
         <FaSmile className='CsvErrorReport-noErrors--smile'/>
         <span>No errors detected!</span>
+        <Link
+          to={location.actions.employee()}
+          className='CsvErrorReport-noErrors--link'
+        >
+          Go back to employee list
+        </Link>
       </div>
     )
   }
