@@ -23,7 +23,7 @@ const enhancers = compose(enhancer, middlewares)
 export default function configureStore() {
   const store = createStore(
     combineReducers({ location: reducer, ...reducers }),
-    composeWithDevTools(enhancers)
+    process.env === 'production' ? enhancers : composeWithDevTools(enhancers)
   )
   sagaMiddleware.run(rootSaga)
   return store
