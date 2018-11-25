@@ -5,6 +5,6 @@ export const routesMap = {
   [locationActions.HOME]: '/',
   [locationActions.CSV]: '/csv',
   [locationActions.EMPLOYEE]: '/employee',
-  [locationActions.EMPLOYEE_EDIT]: '/employee/:id',
-  [locationActions.EMPLOYEE_CREATE]: '/employee/create'
+  [locationActions.EMPLOYEE_EDIT]: '/employee/:id/edit',
+  [locationActions.EMPLOYEE_CREATE]: '/employee/new'
 }
