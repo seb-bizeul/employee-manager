@@ -94,7 +94,9 @@ describe('Employee saga', () => {
     expect(gen.next().value).toEqual(
       takeEvery(employeeActions.REMOVE_ERROR, saga.validate)
     )
-
+    expect(gen.next().value).toEqual(
+      takeEvery(employeeActions.UPDATE, saga.validate)
+    )
     expect(gen.next().done).toBeTruthy()
   })
 

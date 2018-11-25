@@ -21,7 +21,7 @@ export default function ErrorReport(props: Props) {
     return (
       <div
         className='CsvErrorReport-error'
-        key={error.row}
+        key={error.row + error.message}
       >
         <span>Row {error.row}:&nbsp;{error.message}</span>
         <div>

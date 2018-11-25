@@ -27,7 +27,7 @@ const update = (state, action) => {
   const path = R.compose(all, R.lensIndex(index))
   return R.pipe(
     R.set(path, action.payload),
-    R.over(errors, R.filter(e => e.row !== index))
+    R.set(errors, R.filter(e => e.row !== index))
   )(state)
 }
 

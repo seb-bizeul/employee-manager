@@ -17,11 +17,20 @@ export const createEmployee = (employee: $Diff<Employee, { id: string }>): Emplo
   ...employee
 })
 
-export const isNotValid = (employee: Employee) => {
+export const isNotValid = (employee: Employee & { row: number }) => {
   return (
     !employee.email_address.match(/\S+@\S+\.\S+/) ||
     !employee.phone_number.match(/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/im)
   )
+}
+
+export const isEmailDuplicated = (employees: Employee[]) => (employee: Employee) => {
+  return employees.find(e => {
+    return (
+      e.email_address === employee.email_address &&
+      e.id !== employee.id
+    )
+  })
 }
 
 export const buildFormatError = (invalidEmployee: Employee & { row: number }) => ({
@@ -29,6 +38,13 @@ export const buildFormatError = (invalidEmployee: Employee & { row: number }) =>
   code: 'invalid_field',
   message: 'Invalid email or phone',
   type: 'Format Error'
+})
+
+export const buildEmailDuplicationError = (invalidEmployee: Employee & { row: number }) => ({
+  row: invalidEmployee.row,
+  code: 'email_duplication',
+  message: 'This email is duplicated',
+  type: 'Email Duplication'
 })
 
 export const getFirstName = pipe(maybe.map(e => e.first_name), maybe.getOrElse(() => ''))
