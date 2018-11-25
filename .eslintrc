@@ -4,6 +4,7 @@
     "semi": [1, "never"],
     "quotes": ["warn", "single"],
     "jsx-quotes": ["warn", "prefer-single"],
-    "eol-last": "warn"
+    "eol-last": "warn",
+    "no-console": "warn"
   }
 }
