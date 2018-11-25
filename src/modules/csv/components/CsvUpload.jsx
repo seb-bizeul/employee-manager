@@ -26,7 +26,7 @@ export default function CsvUpload({ parseCsv, className }: Props) {
       {props => (
         <div className='CsvUpload-content'>
           <FaFileExcel className='CsvUpload-content--fileIcon'/>
-          <span className='CsvUpload-content--text'>Click here or Drop a CSV file</span>
+          <span className='CsvUpload-content--text'>Click here or drop CSV file</span>
         </div>
       )}
     </Dropzone>
