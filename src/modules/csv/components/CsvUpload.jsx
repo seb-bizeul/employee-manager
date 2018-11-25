@@ -17,16 +17,16 @@ const handleDrop = parseCsv => files => {
   parseCsv(files[0])
 }
 
-export default function DropCsv({ parseCsv, className }: Props) {
+export default function CsvUpload({ parseCsv, className }: Props) {
   return (
     <Dropzone
       onDrop={handleDrop(parseCsv)}
-      className={classNames('DropCsv', className)}
+      className={classNames('CsvUpload', className)}
     >
       {props => (
-        <div className='DropCsv-content'>
-          <FaFileExcel className='DropCsv-content--fileIcon'/>
-          <span>Click here or Drop a CSV file</span>
+        <div className='CsvUpload-content'>
+          <FaFileExcel className='CsvUpload-content--fileIcon'/>
+          <span className='CsvUpload-content--text'>Click here or Drop a CSV file</span>
         </div>
       )}
     </Dropzone>

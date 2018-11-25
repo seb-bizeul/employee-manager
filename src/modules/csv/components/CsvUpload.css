@@ -1,18 +1,23 @@
-.DropCsv {
+.CsvUpload {
   border: 1px dashed lightgray;
   cursor: pointer;
+  margin-top: 64px;
 }
 
-.DropCsv-content {
+.CsvUpload-content {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 16px;
+  padding: 32px;
 }
 
-.DropCsv-content--fileIcon {
+.CsvUpload-content--fileIcon {
   font-size: 128px;
   color: lightgray;
   align-self: center;
+}
+
+.CsvUpload-content--text {
+  margin-top: 32px;
 }
