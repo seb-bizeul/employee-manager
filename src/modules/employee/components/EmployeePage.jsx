@@ -36,28 +36,60 @@ const renderErrorMessage = () => {
   )
 }
 
-export default function EmployeePage(props: Props) {
-  return (
-    <div className='EmployeePage'>
-      <div className='EmployeePage-topBar'>
-        <div className='EmployeePage-topBar--search'></div>
-        <div>
-          <button
-            className='EmployeePage-topBar--button'
-            onClick={props.employeeCreate}
-          >
-            + Create new Employee
-          </button>
-          <button
-            className='EmployeePage-topBar--button'
-            onClick={props.sendInvitations}
-          >
-            Send Invitations
-          </button>
+type State = {|
+  search: string
+|}
+
+export default class EmployeePage extends React.Component<Props, State> {
+
+  state = {
+    search: ''
+  }
+
+  handleChangeSearch = (e: { target: HTMLInputElement }) => {
+    this.setState({ search: e.target.value })
+  }
+
+  byName = (employee: Employee) => {
+    return (
+      employee.first_name.toUpperCase().includes(this.state.search.toUpperCase()) ||
+      employee.last_name.toUpperCase().includes(this.state.search.toUpperCase())
+    )
+  }
+
+  render() {
+    return (
+      <div className='EmployeePage'>
+        <div className='EmployeePage-topBar'>
+            <input
+              className='EmployeePage-topBar--search'
+              type='text'
+              value={this.state.search}
+              onChange={this.handleChangeSearch}
+              placeholder='Search...'
+            />
+          <div>
+            <button
+              className='EmployeePage-topBar--button'
+              onClick={this.props.employeeCreate}
+            >
+              + Create new Employee
+            </button>
+            <button
+              className='EmployeePage-topBar--button'
+              onClick={this.props.sendInvitations}
+            >
+              + Send Invitations
+            </button>
+          </div>
         </div>
+        {this.props.errors.length ? renderErrorMessage() : null}
+        <EmployeeTable
+          employees={this.props.employees.filter(this.byName)}
+          select={this.props.select}
+          remove={this.props.remove}
+        />
       </div>
-      {props.errors.length ? renderErrorMessage() : null}
-      <EmployeeTable employees={props.employees} select={props.select} remove={props.remove}/>
-    </div>
-  )
+    )
+  }
 }
