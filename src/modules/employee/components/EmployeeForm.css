@@ -20,13 +20,23 @@
   width: 150px;
 }
 
+.EmployeeForm-row--input {
+  width: 100%;
+}
+
+.EmployeeForm-row--input---error {
+  color: #D22628;
+  font-size: 12px;
+}
+
 .EmployeeForm-inputText {
   outline: none;
   border-radius: 4px;
   border: 1px solid lightgray;
   transition: all 0.4s;
   padding: 8px;
-  width: 100%;
+  width: calc(100% - 16px);
+  font-size: 0.8em;
 }
 
 .EmployeeForm-inputSelect {
@@ -64,4 +74,9 @@
 
 .EmployeeForm-submitBar--cancel {
   border: 1px solid lightgray;
+}
+
+.EmployeeForm-submitBar--submit:disabled {
+  opacity: 0.5;
+  cursor: default;
 }

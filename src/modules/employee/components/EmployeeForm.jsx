@@ -1,7 +1,8 @@
 // @flow
 import * as React from 'react'
-import { withFormik } from 'formik'
+import { withFormik, type FormikErrors } from 'formik'
 import { maybe, pipe, type Maybe } from '@sbizeul/fp-flow'
+import * as Yup from 'yup'
 
 import * as employeeActions from '../actions'
 import location from '../../location'
@@ -27,6 +28,7 @@ type Props = $ReadOnly<{|
   createEmployee: any,
   mode: FormMode,
   employee: Maybe<Employee>,
+  errors: FormikErrors<FormValues>,
   resetSelectedId: typeof employeeActions.resetSelectedId,
   goToEmployeeList: typeof location.actions.employee,
   notFound: typeof location.actions.notFound
@@ -35,7 +37,6 @@ type Props = $ReadOnly<{|
 export class EmployeeForm extends React.Component<FormikProps & Props> {
 
   componentDidMount() {
-    console.log(this.props.employee)
     if (maybe.isNothing(this.props.employee) && this.props.mode === 'edit') {
       this.props.notFound()
     }
@@ -61,61 +62,79 @@ export class EmployeeForm extends React.Component<FormikProps & Props> {
     }
   }
 
+  isSubmittable() {
+    return !Object.keys(this.props.errors).length
+  }
+
   render() {
-    const { values, handleChange } = this.props
+    const { values, handleChange, errors } = this.props
     return (
       <div className='EmployeeForm'>
         <div className='EmployeeForm-row'>
           <label htmlFor='first_name'>First Name</label>
-          <input
-            type='text'
-            value={values.first_name}
-            name='first_name'
-            onChange={handleChange}
-            className='EmployeeForm-inputText'
-          />
+          <div className='EmployeeForm-row--input'>
+            <input
+              type='text'
+              value={values.first_name}
+              name='first_name'
+              onChange={handleChange}
+              className='EmployeeForm-inputText'
+            />
+            <div className='EmployeeForm-row--input---error'>{errors.first_name}</div>
+          </div>
         </div>
         <div className='EmployeeForm-row'>
           <label htmlFor='last_name'>Last Name</label>
-          <input
-            type='text'
-            value={values.last_name}
-            name='last_name'
-            onChange={handleChange}
-            className='EmployeeForm-inputText'
-          />
+          <div className='EmployeeForm-row--input'>
+            <input
+              type='text'
+              value={values.last_name}
+              name='last_name'
+              onChange={handleChange}
+              className='EmployeeForm-inputText'
+            />
+            <div className='EmployeeForm-row--input---error'>{errors.last_name}</div>
+          </div>
         </div>
         <div className='EmployeeForm-row'>
         <label htmlFor='gender'>Gender</label>
-          <select
-            name='gender'
-            value={values.gender}
-            onChange={handleChange}
-            className='EmployeeForm-inputSelect'
-          >
-            <option value='M'>Male</option>
-            <option value='F'>Female</option>
-          </select>
+          <div className='EmployeeForm-row--input'>
+            <select
+              name='gender'
+              value={values.gender}
+              onChange={handleChange}
+              className='EmployeeForm-inputSelect'
+            >
+              <option value='M'>Male</option>
+              <option value='F'>Female</option>
+            </select>
+          </div>
         </div>
         <div className='EmployeeForm-row'>
           <label htmlFor='email'>Email</label>
-          <input
-            type='email'
-            value={values.email_address}
-            name='email_address'
-            onChange={handleChange}
-            className='EmployeeForm-inputText'
-          />
+          <div className='EmployeeForm-row--input'>
+            <input
+              type='email'
+              value={values.email_address}
+              name='email_address'
+              onChange={handleChange}
+              className='EmployeeForm-inputText'
+            />
+            <div className='EmployeeForm-row--input---error'>{errors.email_address}</div>
+          </div>
         </div>
         <div className='EmployeeForm-row'>
           <label htmlFor='phone'>Phone</label>
-          <input
-            type='phone'
-            value={values.phone_number}
-            name='phone_number'
-            onChange={handleChange}
-            className='EmployeeForm-inputText'
-          />
+          <div className='EmployeeForm-row--input'>
+            <input
+              type='phone'
+              value={values.phone_number}
+              name='phone_number'
+              onChange={handleChange}
+              className='EmployeeForm-inputText'
+              />
+            <div className='EmployeeForm-row--input---error'>{errors.phone_number}</div>
+          </div>
         </div>
         <div className='EmployeeForm-submitBar'>
           <button
@@ -127,6 +146,7 @@ export class EmployeeForm extends React.Component<FormikProps & Props> {
           <button
             onClick={this.handleSubmit}
             className='EmployeeForm-submitBar--submit'
+            disabled={!this.isSubmittable()}
           >
             SUBMIT
           </button>
@@ -137,7 +157,25 @@ export class EmployeeForm extends React.Component<FormikProps & Props> {
 
 }
 
+const validationSchema = Yup.object().shape({
+  first_name: Yup.string()
+    .min(2)
+    .max(50)
+    .required(),
+  last_name: Yup.string()
+    .min(2)
+    .max(50)
+    .required(),
+  email_address: Yup.string()
+    .email()
+    .required(),
+  phone_number: Yup.string()
+    .matches(/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/im, 'invalid phone number')
+    .required()
+})
+
 export default (withFormik({
+  validationSchema,
   mapPropsToValues: ({ employee }) => ({
     first_name: pipe(maybe.map(e => e.first_name), maybe.getOrElse(() => ''))(employee),
     last_name: pipe(maybe.map(e => e.last_name), maybe.getOrElse(() => ''))(employee),
