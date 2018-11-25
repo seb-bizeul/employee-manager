@@ -1,3 +1,7 @@
+html, body, #root, .App, .App-content {
+  height: 100%;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -15,4 +19,8 @@ code {
 
 .link, .link:hover, .link:visited {
   color: #fff;
+}
+
+.rt-th.rt-resizable-header {
+  outline: none;
 }
